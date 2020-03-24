@@ -1,8 +1,16 @@
 import numpy as np
 import pandas as pd
 
-def normalize(x,dim=None):
-    return (x-x.mean(axis=dim)) / x.std()
+def normalize(x,axis=0):
+    return (x-np.mean(x,axis,keepdims=True)) / np.std(x, axis=axis, keepdims=True)
+
+def check_normalization(x, x_norm):
+    assert x.shape == x_norm.shape
+    assert np.abs(np.sum(np.mean(x_norm,axis=0))) < 10**(-15)
+    
+    dim= x.shape[1]
+    assert  (dim- 10**(-15)) <abs( np.sum(np.std(x_norm,axis=0)) ) < (dim+ 10**(-15))
+
 
 
 class Linear:
@@ -36,9 +44,20 @@ class Linear:
 
 if __name__ == '__main__':
     df = pd.read_csv('./data/USA_Housing.csv')
-    X_all = normalize(np.array(df.iloc[:,0:1]),0)
-    y_all = normalize(np.array(df.iloc[:,-2]).reshape((len(df), 1)),0)
+    X_all = normalize(np.array(df.iloc[:,0:1]))
+    y_all = normalize(np.array(df.iloc[:,-2]).reshape((len(df), 1)))
 
+
+
+    df = pd.read_csv('./data/USA_Housing.csv')
+    X = np.array(df.iloc[:,0:-2])
+    y = np.array(df.iloc[:,-2]).reshape((len(df), 1))
+
+    X_all = normalize(X)
+    y_all = normalize(y)
+
+    check_normalization(X, X_all )
+    check_normalization(y, y_all)
 
     linear= Linear(X_all, y_all)
     linear.fit()

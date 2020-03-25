@@ -15,7 +15,7 @@ class Linear:
 
 
     def forward(self):
-            self.preds = np.matmul(self.X, self.beta)
+            self.preds = np.dot(self.X, self.beta)
 
     def backward(self):
         self.grad =2*  np.mean((self.preds - self.y)* self.X,
@@ -33,15 +33,14 @@ class Linear:
             self.loss = self.calculate_loss(self.y, self.preds)
 
     def fit_exact(self):
-
         self.beta_exact = np.linalg.solve(np.dot(self.X.T,self.X),
         np.dot(self.X.T,self.y))
 
     def pred(self, X):
-        return np.matmul(X, self.beta)
+        return np.dot(X, self.beta)
 
     def pred_exact(self, X):
-        return np.matmul(X, self.beta_exact)
+        return np.dot(X, self.beta_exact)
 
 
 if __name__ == '__main__':

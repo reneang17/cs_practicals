@@ -1,29 +1,18 @@
 import numpy as np
-import pandas as pd
-
-def normalize(x,axis=0):
-    return (x-np.mean(x,axis,keepdims=True)) / np.std(x, axis=axis, keepdims=True)
-
-def check_normalization(x, x_norm):
-    assert x.shape == x_norm.shape
-    assert np.abs(np.sum(np.mean(x_norm,axis=0))) < 10**(-15)
-    
-    dim= x.shape[1]
-    assert  (dim- 10**(-15)) <abs( np.sum(np.std(x_norm,axis=0)) ) < (dim+ 10**(-15))
-
 
 
 class Linear:
-    def __init__(self, X, y, iters = 100 ):
+    def __init__(self, X, y):
         self.X = np.concatenate((np.ones(y.shape), X), axis = 1)
         self.y = y
         self.preds = np.zeros(y.shape)
         self.n = y.shape[0]
+
         self.loss = None
         self.lr = 0.01 # funny, it the lr is too big I don't get convergence
-        self.beta = np.random.uniform(low=-1.0, high=1.0, size= (1, self.X.shape[1]) )
+        self.beta = np.random.uniform(low=-1.0, high=1.0, size= (1, self.X.shape[1]))
         self.grad = np.random.uniform(low=-1.0, high=1.0, size= self.beta.shape )
-        self.iters = iters
+
 
     def forward(self):
             self.preds = np.sum(self.X *self.beta, axis =1, keepdims=True)
@@ -32,34 +21,51 @@ class Linear:
         self.grad =2*  np.mean((self.preds - self.y)* self.X, axis=0, keepdims=True )
         self.beta = self.beta -  self.lr * self.grad
 
-    def calculate_loss(self):
-        self.loss = np.mean( (self.y - self.preds)**2 )
+    def calculate_loss(self, y, preds):
+        return np.mean( (y - preds)**2 )
 
-    def fit(self):
-        for _ in range(self.iters):
+    def fit(self, iters):
+        for _ in range(iters):
             self.forward()
             self.backward()
-            self.calculate_loss()
-            print(linear.loss)
+            self.loss = self.calculate_loss(self.y, self.preds)
+
+    def fit_exact(self):
+
+        self.beta_exact = np.linalg.solve(np.dot(self.X.T,self.X),
+        np.dot(self.X.T,self.y)).T
+
+    def pred(self, X):
+        return np.sum(X * self.beta, axis =1, keepdims=True)
+
+    def pred_exact(self, X):
+        return np.sum(X * self.beta_exact, axis =1, keepdims=True)
+
 
 if __name__ == '__main__':
-    df = pd.read_csv('./data/USA_Housing.csv')
-    X_all = normalize(np.array(df.iloc[:,0:1]))
-    y_all = normalize(np.array(df.iloc[:,-2]).reshape((len(df), 1)))
+    from data_prep import Data
+    data= Data()
 
+    data.load_data('./data/USA_Housing.csv', 'Price')
 
+    data.normalize()
+    X_train, X_test, y_train, y_test =  data.split_data(data.X_norm, data.y_norm)
 
-    df = pd.read_csv('./data/USA_Housing.csv')
-    X = np.array(df.iloc[:,0:-2])
-    y = np.array(df.iloc[:,-2]).reshape((len(df), 1))
+    linear= Linear(X_train, y_train)
+    linear.fit(iters=300)
+    linear.fit_exact()
 
-    X_all = normalize(X)
-    y_all = normalize(y)
+    print('Beta from gradient descent:\n{}'.format(linear.beta))
+    print('Beta from matrix inversion:\n{}'.format(linear.beta_exact))
 
-    check_normalization(X, X_all )
-    check_normalization(y, y_all)
+    print('Training MSE (Gradient descent):{}'.format(linear.loss))
 
-    linear= Linear(X_all, y_all)
-    linear.fit()
-    linear.loss
+    # Need to make uniform convention for bias matrix
+    X_test = np.concatenate((np.ones(y_test.shape), X_test), axis = 1)
 
+    print('Test MES (Gradient descent):{}'.format(
+    linear.calculate_loss(y_test, linear.pred(X_test))
+    ))
+    print('Test MES (Matrix inversion):{}'.format(
+    linear.calculate_loss(y_test, linear.pred_exact(X_test))
+    ))

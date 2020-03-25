@@ -23,9 +23,14 @@ class Data:
         self.X = np.array(self.df.loc[:,cols])
         self.y = np.array(self.df.loc[:,target]).reshape((len(self.df), 1))
 
-    def normalize(self, axis=0):
+    def normalize(self, axis=0, norm_target = False):
+        self.norm_target = norm_target
         self.X_norm, self.X_mean, self.X_std = self.normalizer(self.X)
-        self.y_norm, self.y_mean, self.y_std = self.normalizer(self.y)
+        
+        if self.norm_target:
+            self.y_norm, self.y_mean, self.y_std = self.normalizer(self.y)
+        else:
+            self.y_norm = self.y
 
     def normalizer(self, x, axis=0):
         x_mean= np.mean(x, axis,keepdims=True)
@@ -35,7 +40,10 @@ class Data:
         return  x_norm, x_mean, x_std
 
     def denormalize(self, x, y, axis=0):
-        return  x * self.X_std + self.X_mean ,  y * self.y_std + self.y_mean
+        if self.norm_target:
+            return  x * self.X_std + self.X_mean ,  y * self.y_std + self.y_mean
+        else:
+            return  x * self.X_std + self.X_mean ,  y
 
 
     def split_data(self, x, y, p=0.8):

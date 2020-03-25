@@ -10,15 +10,17 @@ class Linear:
 
         self.loss = None
         self.lr = 0.01 # funny, it the lr is too big I don't get convergence
-        self.beta = np.random.uniform(low=-1.0, high=1.0, size= (1, self.X.shape[1]))
-        self.grad = np.random.uniform(low=-1.0, high=1.0, size= self.beta.shape )
+        self.beta = np.random.uniform(low=-1.0, high=1.0, size= (self.X.shape[1], 1))
+        self.grad = None
 
 
     def forward(self):
-            self.preds = np.sum(self.X *self.beta, axis =1, keepdims=True)
+            self.preds = np.matmul(self.X, self.beta)
 
     def backward(self):
-        self.grad =2*  np.mean((self.preds - self.y)* self.X, axis=0, keepdims=True )
+        self.grad =2*  np.mean((self.preds - self.y)* self.X,
+        axis=0, keepdims=True ).T
+
         self.beta = self.beta -  self.lr * self.grad
 
     def calculate_loss(self, y, preds):
@@ -33,13 +35,13 @@ class Linear:
     def fit_exact(self):
 
         self.beta_exact = np.linalg.solve(np.dot(self.X.T,self.X),
-        np.dot(self.X.T,self.y)).T
+        np.dot(self.X.T,self.y))
 
     def pred(self, X):
-        return np.sum(X * self.beta, axis =1, keepdims=True)
+        return np.matmul(X, self.beta)
 
     def pred_exact(self, X):
-        return np.sum(X * self.beta_exact, axis =1, keepdims=True)
+        return np.matmul(X, self.beta_exact)
 
 
 if __name__ == '__main__':
@@ -48,7 +50,7 @@ if __name__ == '__main__':
 
     data.load_data('./data/USA_Housing.csv', 'Price')
 
-    data.normalize()
+    data.normalize(norm_target = True)
     X_train, X_test, y_train, y_test =  data.split_data(data.X_norm, data.y_norm)
 
     linear= Linear(X_train, y_train)
@@ -63,9 +65,9 @@ if __name__ == '__main__':
     # Need to make uniform convention for bias matrix
     X_test = np.concatenate((np.ones(y_test.shape), X_test), axis = 1)
 
-    print('Test MES (Gradient descent):{}'.format(
+    print('Test MSE (Gradient descent):{}'.format(
     linear.calculate_loss(y_test, linear.pred(X_test))
     ))
-    print('Test MES (Matrix inversion):{}'.format(
+    print('Test MSE (Matrix inversion):{}'.format(
     linear.calculate_loss(y_test, linear.pred_exact(X_test))
     ))

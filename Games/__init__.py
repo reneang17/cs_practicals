@@ -1,2 +1,2 @@
 from .Games import *
-from .Utils import *
+from .Utils.Utils import *

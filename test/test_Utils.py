@@ -21,12 +21,12 @@ def test_normalization():
     assert X.shape == X_norm.shape
     assert y.shape == y_norm.shape
 
-    assert np.abs(np.sum(np.mean(X_norm,axis=0))) < 10**(-15)
-    assert np.abs(np.sum(np.mean(y_norm,axis=0))) < 10**(-15)
+    assert np.abs(np.sum(np.mean(X_norm,axis=0))) < 10**(-13)
+    assert np.abs(np.sum(np.mean(y_norm,axis=0))) < 10**(-13)
     dim= X.shape[1]
-    assert  (dim- 10**(-15)) <abs( np.sum(np.std(X_norm,axis=0)) ) < (dim+ 10**(-15))
+    assert  (dim- 10**(-13)) <abs( np.sum(np.std(X_norm,axis=0)) ) < (dim+ 10**(-13))
     dim= y.shape[1]
-    assert  (dim- 10**(-15)) <abs( np.sum(np.std(y_norm,axis=0)) ) < (dim+ 10**(-15))
+    assert  (dim- 10**(-13)) <abs( np.sum(np.std(y_norm,axis=0)) ) < (dim+ 10**(-13))
 
 def test_split_data():
     X = np.random.random((10,5))

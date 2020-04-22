@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.testing as npt
 
-from Games.Utils import shuffle, split_data, Normalizer
+from Games import shuffle, split_data, Normalizer
 
 def test_shuffle():
     X = np.random.random((5,10))

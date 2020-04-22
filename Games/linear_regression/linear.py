@@ -9,9 +9,10 @@ class Linear:
         self.n = y.shape[0]
 
         self.loss = None
-        self.lr = 0.01 # funny, it the lr is too big I don't get convergence
+        self.lr = 0.001 # funny, it the lr is too big I don't get convergence
         self.beta = np.random.uniform(low=-1.0, high=1.0, size= (self.X.shape[1], 1))
         self.grad = None
+
 
 
     def forward(self):
@@ -53,7 +54,7 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test =  data.split_data(data.X_norm, data.y_norm)
 
     linear= Linear(X_train, y_train)
-    linear.fit(iters=300)
+    linear.fit(iters=10000)
     linear.fit_exact()
 
     print('Beta from gradient descent:\n{}'.format(linear.beta))

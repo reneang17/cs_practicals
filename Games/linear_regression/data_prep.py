@@ -26,7 +26,7 @@ class Data:
     def normalize(self, axis=0, norm_target = False):
         self.norm_target = norm_target
         self.X_norm, self.X_mean, self.X_std = self.normalizer(self.X)
-        
+
         if self.norm_target:
             self.y_norm, self.y_mean, self.y_std = self.normalizer(self.y)
         else:

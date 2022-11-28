@@ -48,7 +48,7 @@ if __name__ == '__main__':
     from data_prep import Data
     data= Data()
 
-    data.load_data('./data/USA_Housing.csv', 'Price')
+    data.load_data('../../data/USA_Housing.csv', 'Price')
 
     data.normalize(norm_target = True)
     X_train, X_test, y_train, y_test =  data.split_data(data.X_norm, data.y_norm)

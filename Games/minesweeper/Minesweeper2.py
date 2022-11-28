@@ -1,11 +1,6 @@
 import os
-os.system("clear")
-
-"""A command line version of Minesweeper"""
 import random
-import re
-import time
-from string import ascii_lowercase
+#os.system("clear")
 
 class Cell():
     def __init__(self):
@@ -21,7 +16,6 @@ class Cell():
         else:
             return  "H"
 
-
 class Board():
     def __init__(self, side, n_mines):
         self.side = side
@@ -29,18 +23,16 @@ class Board():
         self.board = [[ Cell() for i in range(side)] for j in range(side)]
 
     def print_board(self):
+        print('Minesweeper')
         for row in self.board:
             print(*row, sep='\t')
 
-    def getneighbors(self, row, col ):
-        side = self.side
+    def getneighboors(self, row, col):
         neighbors = []
-        for i in range(-1, 2):
-            for j in range(-1, 2):
-                if i == 0 and j == 0:
-                    continue
-                elif -1 < (row + i) < side and -1 < (col + j) < side:
-                    neighbors.append((row + i, col + j))
+        for i in [row-1,row,row+1]:
+            for j in [col-1,col,col+1]:
+                if (i,j) != (row,col) and (0 <= i < self.side) and (0 <= j < self.side):
+                    neighbors.append((i,j))
         return neighbors
 
     def getrandomcell(self):
@@ -63,14 +55,14 @@ class Board():
     def drawnumbers(self):
         for rowno, row in enumerate(self.board):
             for colno, cell in enumerate(row):
+                neighbors = self.getneighboors(rowno, colno)
                 if cell.value != 'X':
-                    values = [self.board[r][c].value for r, c in self.getneighbors(rowno, colno)]
-                    (self.board[rowno][colno]).value = str(values.count('X'))
+                    values = [self.board[i][j].value for (i,j) in neighbors]
+                    cell.value = str(values.count('X'))
+
 
 class Minesweeper():
     def __init__(self, gridsize, nmines):
-        self.gameover= False
-        self.lost = False
         self.game = Board(gridsize, nmines)
         self.game.drawmines()
         self.game.drawnumbers()
@@ -78,16 +70,14 @@ class Minesweeper():
         self.nmines = nmines
 
     def read_turn(self):
-        size = self.size
-        get_turn = True
         self.game.print_board()
-        while get_turn:
+        while True:
             inp= input('Enter "nm" to reveal cell n of nmf to flag that cell:')
-            if 1<len(inp)<=3 and inp[0].isdigit() and inp[1].isdigit()  and (
-                -1 < int(inp[0]) < size) and (-1 < int(inp[1]) < size):
+            if 2<=len(inp)<=3 and inp[0].isdigit() and inp[1].isdigit()  and (
+                0 <= int(inp[0]) < self.size) and (0 <=  int(inp[1]) < self.size):
                 cell = self.game.board[int(inp[0])][int(inp[1])]
 
-                if not cell.visible:
+                if cell.visible is False:
                     if len(inp) == 3 and inp[2]=='f':
                         return int(inp[0]), int(inp[1]), inp[2]
                     elif len(inp) == 2:
@@ -96,13 +86,13 @@ class Minesweeper():
         os.system("clear")
 
     def reveal_zeros(self, i, j):
-        nei = self.game.getneighbors(i,j)
-        for i,j in nei:
-            cell = self.game.board[i][j]
+        neighbors = self.game.getneighboors(i,j)
+        for (r,s) in neighbors:
+            cell = self.game.board[r][s]
             if int(cell.value)==0:
-                if not cell.visible:
+                if cell.visible is False:
                     cell.visible = True
-                    self.reveal_zeros(i,j)
+                    self.reveal_zeros(r,s)
 
     def check_state(self):
         st = 0
@@ -116,7 +106,7 @@ class Minesweeper():
 
 
     def play(self):
-        while not self.gameover:
+        while True:
             turn = self.read_turn()
             cell = self.game.board[turn[0]][turn[1]]
 
@@ -129,7 +119,6 @@ class Minesweeper():
 
                 cell.visible = True
                 if cell.value == 'X':
-                    self.gameover = True
                     print("Game Over")
                     for rowno, row in enumerate(self.game.board):
                         for colno, cell in enumerate(row):
@@ -141,9 +130,14 @@ class Minesweeper():
                     self.reveal_zeros(*turn)
 
             if self.check_state():
+                self.game.print_board()
                 print('You won!!!!')
                 print('Wohoooooo!!!!')
                 break
             os.system("clear")
 if __name__ == "__main__":
-    Minesweeper(5,5).play()
+    Minesweeper(5,1).play()
+
+#class Game(self):
+
+#class Minesweeper(self):

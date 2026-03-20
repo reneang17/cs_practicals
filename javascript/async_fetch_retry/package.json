@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "demo": "node demo.js",
-    "solution": "node solution.js"
+    "solution": "node solution.js",
+    "test": "node test.js",
+    "test:solution": "node test.js solution"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,14 @@
+{
+  "name": "async_fetch_retry",
+  "version": "1.0.0",
+  "description": "- Use **Promises**, `async/await`, and the native `fetch` API to retrieve data from a remote public API endpoint. - Implement an **Exponential Backoff Retry Mechanism** to automatically retry failed requests with increasing delays. - Handle potential Promise rejections/errors gracefully in `try...catch` blocks. - Use Node.js's native `fs.promises` module to perform asynchronous file system writes.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "demo": "node demo.js",
+    "solution": "node solution.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

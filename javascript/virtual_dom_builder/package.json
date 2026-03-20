@@ -1,0 +1,14 @@
+{
+  "name": "virtual_dom_builder",
+  "version": "1.0.0",
+  "description": "A \"Virtual DOM\" is a simplified, lightweight representation of an actual DOM tree, usually written in basic objects or classes. Frontend libraries (like React or Vue) use this to figure out what changed in the UI before re-drawing the actual browser DOM.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "demo": "node demo.js",
+    "solution": "node solution.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

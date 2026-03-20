@@ -1,0 +1,14 @@
+{
+  "name": "debounce_throttle",
+  "version": "1.0.0",
+  "description": "Implement custom `debounce()` and `throttle()` utility functions from scratch. These are staple performance-optimization functions in Javascript, frequently asked about in interviews to test your knowledge of **Closures**, `setTimeout`, and `this` context binding.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "demo": "node demo.js",
+    "solution": "node solution.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

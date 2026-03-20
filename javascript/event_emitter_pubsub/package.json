@@ -1,0 +1,14 @@
+{
+  "name": "event_emitter_pubsub",
+  "version": "1.0.0",
+  "description": "The **Publish-Subscribe (Pub/Sub) pattern** is immensely popular in frontend frameworks (like React, Vue, Redux) and backend systems. Your objective is to build a custom `EventEmitter` class from scratch using Vanilla JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "demo": "node demo.js",
+    "solution": "node solution.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

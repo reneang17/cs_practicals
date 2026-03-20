@@ -1,15 +1,15 @@
 import numpy as np
 import numpy.testing as npt
 
-import Games
+import python_data_science_practicals
 
 def test_Games_smoke():
     #Smoke_test
-    obt = Games.Games_object()
+    obt = python_data_science_practicals.Games_object()
 
 def test_Games_object_fizz():
     #test the fizz_function
-    obj = Games.Games_object()
+    obj = python_data_science_practicals.Games_object()
     output = obj.fizz()
 
     npt.assert_equal(output, "buzz")

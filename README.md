@@ -1,52 +1,48 @@
-# Python CS & Data Science Practicals
+# CS Practicals 🚀
 
-Welcome to the `cs_practicals` repository! This project contains a collection of Python-based computer science exercises, small games, and fundamental data science/machine learning implementations.
+Welcome to the `cs_practicals` repository! This project serves as a comprehensive collection of fundamental computer science exercises, small logic games, and data science implementations. 
 
-## 🚀 Projects Included
+The repository is divided into two main language tracks, each containing specialized projects designed to help practice and demonstrate core software engineering skills—from machine learning basics to advanced frontend / backend concepts.
 
-### Data Science & Machine Learning
-- **K-Means Clustering** (`kmeans/`)
-- **Linear Regression** (`linear_regression/`)
-- **Logistic Regression** (`logistic_regression/`)
-- **Neural Networks** (`neural_networks/`)
+---
 
-### Computer Science & Games
-- **Blackjack** (`black_jack/`)
-- **Connect 4** (`connet_4/`)
-- **Hangman** (`hangman/`)
-- **Minesweeper** (`minesweeper/`)
-- **Spell Checker** (`spell_checker/`)
-- **Sudoku** (`sudoku/`)
-- **Tic-Tac-Toe** (`tic-tac-toe/`)
+## 📁 Repository Structure
 
-## 🛠 Setup & Installation
+### 🐍 [Python Practicals](./python/)
+The Python directory contains a variety of data science, machine learning, and logic-based game implementations.
+- **Data Science & ML:** K-Means Clustering, Linear Regression, Logistic Regression, Neural Networks.
+- **Games & Algorithms:** Blackjack, Connect 4, Hangman, Minesweeper, Spell Checker (Tries), Sudoku, Tic-Tac-Toe.
+- 👉 *[View Python README for setup and details](./python/README.md)*
 
-To run the provided Jupyter notebooks and scripts, you'll want to install the necessary dependencies (`numpy`, `pandas`, `pytest`, `jupyter`) locally.
+### 🟨 [JavaScript Exercises](./javascript/)
+The JavaScript directory focuses on core Vanilla JS and Node.js concepts frequently asked in junior and mid-level frontend interviews.
+- **Async & APIs:** Async Fetch with Exponential Backoff Retries.
+- **Performance:** Custom Debounce & Throttle implementations.
+- **Patterns:** Event Emitter (Publish-Subscribe pattern).
+- **DOM & UI:** Recursive Virtual DOM Builder.
+- **Concurrency & Backend:** Async Task Queues and a Vanilla HTTP Server built from scratch.
+- 👉 *[View JavaScript README for setup and details](./javascript/README.md)*
 
-1. **Create a virtual environment:**
-   ```bash
-   python3 -m venv venv
-   ```
+---
 
-2. **Activate the environment:**
-   ```bash
-   source venv/bin/activate
-   ```
+## 🛠 General Setup
 
-3. **Install the requirements:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+Each major directory has its own isolated environment requirements.
 
-4. **Launch Jupyter Notebook (if exploring `.ipynb` files):**
-   ```bash
-   jupyter notebook
-   ```
-
-## 🧪 Running Tests
-
-The repository includes tests for the core utilities and shared components. You can run them using `pytest` from the root directory:
-
+**For Python:**
 ```bash
-PYTHONPATH=. venv/bin/pytest
+cd python
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip install -e .
 ```
+
+**For JavaScript:**
+```bash
+cd javascript/project_name
+npm install
+npm start
+```
+
+*See the individual READMEs inside each folder for deep-dive instructions on running the code, tests, and demos!*

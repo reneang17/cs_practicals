@@ -7,10 +7,13 @@
     "start": "node index.js",
     "demo": "node demo.js",
     "solution": "node solution.js",
-    "test": "node test.js",
-    "test:solution": "node test.js solution"
+    "test": "jest",
+    "test:solution": "FILE_TARGET=solution jest"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
 }

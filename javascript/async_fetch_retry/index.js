@@ -5,7 +5,7 @@ const path = require('path');
  * Perform a fetch request with exponential backoff retries.
  * @param {string} url - The URL to fetch.
  * @param {object} options - Fetch options.
- * @param {number} retries - Number of total retries.
+ * @param {number} retries - Number of total retries (Attempt 1 + N retries).
  * @param {number} delay - Base delay in milliseconds.
  * @returns {Promise<any>}
  */

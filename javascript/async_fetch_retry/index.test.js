@@ -16,34 +16,34 @@ describe('Async Fetch & Retry Project', () => {
     
     it('should retry a failed request exactly 3 times before succeeding', async () => {
       // 1. SETUP (Mocking)
-      // We don't want to actually hit the real internet!
-      // So we "mock" the global fetch API to pretend it failed twice, then succeeded.
+      // We "mock" the global fetch API to pretend it failed 3 times, then succeeded on the 4th (which is the 3rd retry).
       global.fetch = jest.fn()
-        .mockResolvedValueOnce({ ok: false, status: 500 }) // Attempt 1 => Fails
-        .mockResolvedValueOnce({ ok: false, status: 500 }) // Attempt 2 => Fails
+        .mockResolvedValueOnce({ ok: false, status: 500 }) // Initial Attempt => Fails
+        .mockResolvedValueOnce({ ok: false, status: 500 }) // Retry 1 => Fails
+        .mockResolvedValueOnce({ ok: false, status: 500 }) // Retry 2 => Fails
         .mockResolvedValueOnce({ 
           ok: true, 
-          json: async () => ({ success: true })            // Attempt 3 => Succeeds!
+          json: async () => ({ success: true })            // Retry 3 => Succeeds!
         });
 
       // 2. EXECUTION
-      // We pass a tiny delay (10ms) so our test runs instantly instead of waiting seconds.
       const result = await fetchWithRetry('http://mock.url', {}, 3, 10);
 
       // 3. ASSERTION
-      // Did it call fetch 3 times like we expected?
-      expect(global.fetch).toHaveBeenCalledTimes(3);
+      // Initial Attempt + 3 Retries = 4 total calls!
+      expect(global.fetch).toHaveBeenCalledTimes(4);
       
       // Did it return the final successful JSON data?
       expect(result).toEqual({ success: true });
     });
 
-    it('should throw an error if all retries instantly fail', async () => {
+    it('should throw an error if all 2 retries fail (3 attempts total)', async () => {
       // Setup fetch to always fail
       global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500 });
 
-      // We expect the promise to "reject" (throw an error) after 2 attempts
+      // We pass `retries = 2`, so it should perform exactly 3 attempts and then reject
       await expect(fetchWithRetry('http://mock.url', {}, 2, 5)).rejects.toThrow();
+      expect(global.fetch).toHaveBeenCalledTimes(3);
     });
 
   });

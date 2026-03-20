@@ -10,9 +10,9 @@ const path = require('path');
  * @returns {Promise<any>}
  */
 async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
-  for (let i = 0; i < retries; i++) {
+  for (let i = 0; i <= retries; i++) {
     try {
-      console.log(`[Attempt ${i + 1}/${retries}] Fetching ${url}...`);
+      console.log(`[Attempt ${i + 1}/${retries + 1}] Fetching ${url}...`);
       const response = await fetch(url, options);
       
       if (!response.ok) {
@@ -25,12 +25,12 @@ async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
     } catch (error) {
       console.error(`Attempt ${i + 1} failed: ${error.message}`);
       
-      if (i < retries - 1) {
-        const timeout = delay * Math.pow(2, i); // Exponential backoff (1s, 2s, 4s...)
+      if (i < retries) {
+        const timeout = delay * Math.pow(2, i); // Exponential backoff
         console.log(`Retrying in ${timeout}ms...\n`);
         await new Promise(resolve => setTimeout(resolve, timeout));
       } else {
-        throw new Error(`Failed to fetch after ${retries} attempts. Last error: ${error.message}`);
+        throw new Error(`Failed to fetch after ${retries} retries. Last error: ${error.message}`);
       }
     }
   }

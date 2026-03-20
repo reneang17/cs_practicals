@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.testing as npt
 
-from python.Utils import shuffle, split_data, Normalizer
+from Utils import shuffle, split_data, Normalizer
 
 def test_shuffle():
     X = np.random.random((5,10))
